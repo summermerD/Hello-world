@@ -1,0 +1,9 @@
+{
+    "jscodehints.detectedExclusions": [
+        "/Users/Ting/Documents/temp/lab5/karma.conf.js",
+        "/Users/Ting/Documents/temp/lab5/my.conf.js",
+        "/Users/Ting/Documents/temp/lab5/www/js/detect-test.js",
+        "/Users/Ting/Documents/temp/lab5/www/js/app.js",
+        "/Users/Ting/Documents/temp/lab6/www/tests/detect-test.js"
+    ]
+}
