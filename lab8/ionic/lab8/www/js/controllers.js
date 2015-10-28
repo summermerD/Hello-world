@@ -13,6 +13,7 @@ angular.module('starter.controllers', ['ionic', 'ui.router', 'starter.services']
                sessionStorage.setItem("userID", result["0"]._id.$oid); 
                 console.log(result["0"].username);
                 console.log(result["0"].password);
+                console.log(result["0"]._id.$oid);
             }
             else $scope.msg ="Incorrect username or password!";
         document.getElementById("username").value="";
@@ -22,40 +23,29 @@ angular.module('starter.controllers', ['ionic', 'ui.router', 'starter.services']
 })
 
 
-.controller('Upd', function($scope,$http, $httpParamSerializerJQLike) { 
-    $scope.pageClass = 'update';
-    $scope.update = function(NewPassword){
-        console.log("inside update function");
-        $http({
-            method: 'PUT',
-            url: 'https://api.mongolab.com/api/1/databases/ase/collections/users/'+ sessionStorage.getItem("userID")+'?apiKey=TFqu35e8BmE9SBB3fRgCe6MpqUcqKWBi',
-            data: JSON.stringify( { "$set" : { "password" : NewPassword } } ),
-            contentType: "application/json"
-        }).success (function(data) { 
-            console.log(data);
-            $scope.msg ="Password has been updated!";
-        })
-    }
 
   
-    
-    
-    
-    
-    
+    .controller('Upd', function($scope,MongoRESTService, $state) {
+        var name=sessionStorage.getItem("username");
+        var psd=sessionStorage.getItem("password");
+        var id=sessionStorage.getItem("userID");
+    $scope.update = function(newPassword){
+        console.log("inside update function");
+        console.log(id);
+        var result = MongoRESTService.update(name, psd, id,newPassword, function(result){
+            $scope.msg ="Password has been updated!";
+            document.getElementById("update").value="";
+           
+        });           
+    }
     
         $scope.delete = function(){
         console.log("inside delete function");
-        $http({
-            method: 'DELETE',
-            url: 'https://api.mongolab.com/api/1/databases/ase/collections/users/'+ sessionStorage.getItem("userID")+'?apiKey=TFqu35e8BmE9SBB3fRgCe6MpqUcqKWBi',
-            contentType: "application/json"
-        }).success (function(data) { 
-            $scope.msg ="Account has been deleted!";
-        })
-    }
-
-  })                  
+            MongoRESTService.delete(id,function(){
+            $scope.msg ="Account has been deleted!";             
+            });
+        };    
+})
         
 
 .controller('DiaDet', function($scope, $http){

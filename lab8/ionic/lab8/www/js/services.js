@@ -29,5 +29,27 @@ services.factory('MongoRESTService', function($http) {
         });
       },
         
+      update: function(username,password, id, newPassword, successCallback) {
+        var res = $http.put(url+"?username="+username+"&newpass="+newPassword+"&id="+id);
+
+        res.success(function(data, status, headers, config) {
+          successCallback(data);
+        });
+        res.error(function(data, status, headers, config) {
+          console.log(data);
+        });
+      },  
+        
+        delete: function(id,successCallback) {
+        var res = $http.delete(url+"?&id="+id);
+
+        res.success(function(data, status, headers, config) {
+          successCallback(data);
+        });
+        res.error(function(data, status, headers, config) {
+          console.log(data);
+        });
+      },    
+        
     }
     });

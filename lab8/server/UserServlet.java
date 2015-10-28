@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
 import com.ibm.json.java.JSON;
 import com.ibm.json.java.JSONObject;
 import com.mongodb.BasicDBObject;
@@ -18,6 +21,9 @@ import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.WriteResult;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 
 @WebServlet("/user")
@@ -108,20 +114,53 @@ public class UserServiet extends HttpServlet {
 	
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-//		String newpsd = request.getParameter("newpassword");
-//		System.out.println(newpsd);
+		String name=request.getParameter("username");
+		String password=request.getParameter("newpass");
+		String id=request.getParameter("id");
 		
-		String name=request.getParameter("newpassword");
 		System.out.println(name);
-		request.setAttribute("password", 11);
-
+		System.out.println(password);
+		System.out.println(id);
+		
+		Document idOfDocumentToUpdate = new Document("_id", new ObjectId(id));
+		Document attributeToUpdate = new Document();
+		attributeToUpdate.append("password", password);
+		
+		MongoClientURI uri = new MongoClientURI("mongodb://root:password@ds037622.mongolab.com:37622/ase");
+		MongoClient client = new MongoClient(uri);
+		
+		MongoDatabase db = client.getDatabase(uri.getDatabase());
+		MongoCollection users = db.getCollection("users");
+		
+		Document user = new Document(attributeToUpdate);
+		users.updateOne(idOfDocumentToUpdate, new Document("$set", user));
 		
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setHeader("Access-Control-Allow-Methods", "PUT");
 		response.setHeader("Access-Control-Allow-Headers", "Content-Type");
 		response.setHeader("Access-Control-Allow-Max-Age", "86400");
-		//response.getWriter().write(user1.toJson());
+		response.getWriter().write(user.toJson());
+		
 	}	
+	
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String id=request.getParameter("id");
+		Document idOfDocumentToUpdate = new Document("_id", new ObjectId(id));
+		
+		MongoClientURI uri = new MongoClientURI("mongodb://root:password@ds037622.mongolab.com:37622/ase");
+		MongoClient client = new MongoClient(uri);
+		
+		MongoDatabase db = client.getDatabase(uri.getDatabase());
+		MongoCollection users = db.getCollection("users");
+	
+		final DeleteResult result = users.deleteOne(new Document("_id", new ObjectId(id)));
+		
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Methods", "DELETE");
+		response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+		response.setHeader("Access-Control-Allow-Max-Age", "86400");
+		
+	}
 }
 
 
