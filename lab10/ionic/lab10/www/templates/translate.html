@@ -1,0 +1,46 @@
+<ion-nav-bar class="bar-stable">
+   <ion-nav-back-button class="button-icon icon ion-ios-arrow-back">Back</ion-nav-back-button>
+   <ion-view ng-controller="transCtrl" view-title="Translation">
+    <ion-content padding="true" class="has-header">
+        <form class="list">
+            <div class="list">
+          <label class="item item-input item-select">
+            <div class="input-label">
+              Source language
+            </div>
+            <select ng-model="source">
+              <option selected>English</option>
+              <option>Arabic</option>
+              <option>Spanish</option>
+              <option>French</option>
+              <option>Portuguese</option>
+            </select>
+            </label>
+            <label class="item item-input item-select">
+            <div class='input-label'>
+            Target language
+            </div>
+             <select ng-model="target">
+              <option selected>English</option>
+              <option>Arabic</option>
+              <option>Spanish</option>
+              <option>French</option>
+              <option>Portuguese</option>
+            </select>
+                </label>
+             <label class="item item-input">
+            <input type="text" ng-model="text" placeholder="text to be translated">  
+            </label>
+          
+        </div>
+        </form>
+        <button class="button button-block button-calm" ng-click="getResult(source, target, text)">Submit</button>
+        <div><form>
+            <label>Translation result:</label><p> {{result.translations[0].translation}} <p>
+            <p>Word count:</p><p> {{result.wordCount}} <p>
+            <p>Character result:</p><p> {{result.characterCount}} <p>
+            </form>
+        </div>
+    </ion-content>
+</ion-view>
+</ion-nav-bar>

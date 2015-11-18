@@ -1,0 +1,34 @@
+<ion-nav-bar class="bar-stable">
+   <ion-nav-back-button class="button-icon icon ion-ios-arrow-back">Back</ion-nav-back-button>
+   <ion-view ng-controller="visualCtrl" title="Visualization">
+    <ion-content padding="true" class="has-header">
+        <form class="list">
+            <div class="list">
+          <label class="item item-input item-select">
+            <div class="input-label">
+              SearchLabel
+            </div>
+            <select ng-model="SearchLabel" placeholder="All(default)">
+              <option>Animal</option>
+              <option>Food</option>
+              <option>Landmark</option>
+              <option>Object</option>
+                <option>Scene</option>
+                <option>Sports</option>
+                <option>Vehicle</option>
+            </select>
+          </label>
+        </div>
+            <label class="item item-input">
+                <span class="input-label">Input</span>
+                <input type="text" placeholder="Search URL" ng-model="SearchURL">
+            </label>
+        </form>
+        <button class="button button-block button-calm" ng-click="getResult(SearchLabel, SearchURL)">Submit</button>
+        <div>
+            <p> {{ result.getLabel() }} <p>
+            
+        </div>
+    </ion-content>
+</ion-view>
+</ion-nav-bar>

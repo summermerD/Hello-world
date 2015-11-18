@@ -20,7 +20,9 @@ angular.module('app', ['ionic', 'app.routes'])
     }
   });
 })
-.controller('pageCtrl', function($scope, $http) {
+    
+    
+.controller('alchemyCtrl', function($scope, $http) {
     
     $scope.getResult = function(searchKey, searchURL) {
         var url= 'http://alechemydemo.mybluemix.net/api/Alchemy/search/'+searchKey+'/'+searchURL;
@@ -34,4 +36,47 @@ angular.module('app', ['ionic', 'app.routes'])
                 console.log("data not received from url");
             }); 
         }
-});
+})
+
+.controller('transCtrl', function($scope, $http) {
+    
+    $scope.getResult = function(source, target, text) {
+        var url= 'http://alechemydemo.mybluemix.net/api/translate/'+source+'/'+target+'/'+text;
+        console.log(text);
+        $http.get(url) 
+            .success(function(data) { 
+                console.log(data);
+                $scope.result = data;
+            }) 
+            .error(function(err) { 
+                console.log("data not received from input");
+            }); 
+        }
+})
+
+
+.controller('visualCtrl', function($scope, $http) {
+    
+    $scope.getResult = function(searchLabel, searchURL) {
+        
+        if (searchLabel==null){
+        var url= 'http://alechemydemo.mybluemix.net/api/visual/search/'+searchURL;
+        }
+        else
+        var url= 'http://alechemydemo.mybluemix.net/api/visual/search/'+searchLabel+'/'+searchURL;
+        console.log(url);
+        $http.get(url) 
+            .success(function(data) { 
+                console.log(data);
+                $scope.result = data;
+            }) 
+            .error(function(err) { 
+                console.log("data not received from url");
+            }); 
+    }
+    
+    
+    
+    
+})
+
